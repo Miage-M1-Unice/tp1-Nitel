@@ -3,6 +3,7 @@ package fr.unice.miage.vnahim;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.util.regex.Pattern;
 
 public class ReadRepo {
     public File file;
@@ -34,7 +35,7 @@ public class ReadRepo {
         for (File f: list) {
             System.out.println(f);
             if (f.isDirectory()){
-                readDeep(f);
+                readDeepFiltered(f,filter);
                 System.out.println();
             }
         }
@@ -43,22 +44,45 @@ public class ReadRepo {
     public static void main(String[] args){
         ReadRepo readRepo = new ReadRepo(".");
         readRepo.readSimple(); //1
-       // readRepo.readDeep(readRepo.file); //2
-        readRepo.readDeepFiltered(readRepo.file, new Filter1()); //3
+        readRepo.readDeep(readRepo.file); //2
+        readRepo.readDeepFiltered(readRepo.file, new Filter1()); // on class
+        readRepo.readDeepFiltered(readRepo.file, new Filter()); // other class
+
+
+        FilenameFilter filenameFilter = (dir, name) -> {
+            File ndir = new File(dir.getPath()+"/"+name);
+            if (ndir.isDirectory() || ndir.getPath().endsWith(".java")){
+                return true;
+            }
+
+            return false;
+        };
+        readRepo.readDeepFiltered(readRepo.file, filenameFilter); // anonyme
+
+        System.out.println("------------------REGEX----------------");
+
+        // REGEX
+
+        readRepo.readDeepFiltered(readRepo.file, new FilterRegex());
+
+
+
     }
 
 
     public static class Filter1 implements FilenameFilter{
 
         @Override
-        public boolean accept(File dir, String name) { //TODO
-            File ndir = new File(dir.getPath()+"/");
+        public boolean accept(File dir, String name) {
+            File ndir = new File(dir.getPath()+"/"+name);
             if (ndir.isDirectory() || ndir.getPath().endsWith(".java")){
                 return true;
             }
 
             return false;
         }
+
+
     }
 }
 
