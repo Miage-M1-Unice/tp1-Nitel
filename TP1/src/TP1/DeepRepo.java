@@ -1,4 +1,4 @@
-package fr.unice.miage.vnahim;
+package fr.unice.miage.vnahim.TP1;
 
 import java.io.File;
 

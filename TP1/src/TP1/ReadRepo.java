@@ -1,9 +1,7 @@
-package fr.unice.miage.vnahim;
+package fr.unice.miage.vnahim.TP1;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FilenameFilter;
-import java.util.regex.Pattern;
 
 public class ReadRepo {
     public File file;
